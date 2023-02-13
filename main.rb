@@ -1,5 +1,5 @@
 #init and sample variables
-key = "fc53f4482790470da2cd1d4d1364199b"
+key = ""
 
 # TTY::Color.color?    # => true
 # TTY::Color.support?  # => true
