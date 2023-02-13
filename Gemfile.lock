@@ -21,6 +21,7 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
+  pastel
   tty-color
   tty-table
 

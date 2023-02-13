@@ -1,11 +1,10 @@
 #init and sample variables
-key = ""
+key = "fc53f4482790470da2cd1d4d1364199b"
 
 # TTY::Color.color?    # => true
 # TTY::Color.support?  # => true
 
 base = "lapi.transitchicago.com/api/1.0/ttarrivals.aspx"
-
 example = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=40380&max=10"
 example_damen = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=40090&max=10"
 example_damen_kimball_bound = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=30018&max=10"
@@ -16,6 +15,7 @@ require "nokogiri"
 
 require "tty-table"
 require "tty-color"
+require "pastel"
 
 def initialize_destinations
 	file = CSV.read("stops.txt")
@@ -78,14 +78,33 @@ def get_arrival_times(station, key, destinations)
 	live = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=#{station}&max=10"
 	doc = Nokogiri::XML(URI.open(live))
 	arr = []
+	i = 0
 	trains = doc.xpath("//rt")
 	trains.each do |train|
-		arr << "A " + train.text + " line train will be arriving at "
+		name = ""
+		case train.text
+		when "G"
+			arr << ["Green"]
+		when "Org"
+			arr << ["Orange"]
+		when "P"
+			arr << ["Purple"]
+		when "Blue"
+			arr << ["Blue"]
+		when "Pink"
+			arr << ["Pink"]
+		when "Brn"
+			arr << ["Brown"]
+		when "Red"
+			arr << ["Red"]
+		when "Y"
+			arr << ["Yellow"]	
+		end
 	end
 	i = 0
 	trains = doc.xpath("//arrT")
 	trains.each do |train|
-		arr[i] += train.text
+		arr[i] << train.text
 		i += 1
 	end
 	i = 0
@@ -100,14 +119,43 @@ def get_arrival_times(station, key, destinations)
 		else
 			name = "destination not found"
 		end
-		arr[i] += " headed towards " + name
+		arr[i] << name
 		i += 1
 	end
 	return arr
+end
+
+def display_arrival_times(times)
+	pastel = Pastel.new
+	times.each do |time|
+		colored_text = ""
+		case time[0]
+		when "Brown"
+			colored_text = pastel.bright_black("Brown")
+		when "Red"
+			colored_text = pastel.red("Red")
+		when "Green"
+			colored_text = pastel.green("Green")
+		when "Yellow"
+			colored_text = pastel.yellow("Yellow")
+		when "Purple"
+			colored_text = pastel.magenta("Purple")
+		when "Orange"
+			colored_text = pastel.bright_yellow("Orange")
+		when "Blue"
+			colored_text = pastel.blue("Blue")
+		when "Pink"
+			colored_text = pastel.bright_red("Pink")
+		end
+		# puts colored_text
+		puts "A " + colored_text + " line train towards " + time[2] + " will arrive at " + time[1]
+	end
+	
 end
 
 stops = initialize_stops
 destinations = initialize_destinations
 print_stops(stops)
 user_stop = get_user_stop(stops) # returns station code to plug into URL 
-puts get_arrival_times(user_stop, key, destinations)
+arrival_times = get_arrival_times(user_stop, key, destinations)
+display_arrival_times(arrival_times)
