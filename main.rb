@@ -58,7 +58,7 @@ def get_user_stop(stops)
 			names << stop
 		end
 		if names.include? i
-			p stops.key(i)
+			return stops.key(i)
 		else
 			puts "No station found."
 			exit(0)
@@ -74,7 +74,7 @@ def get_user_stop(stops)
 	end
 end
 
-def get_arrival_times(station, key)
+def get_arrival_times(station, key, destinations)
 	live = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=#{station}&max=10"
 	doc = Nokogiri::XML(URI.open(live))
 	arr = []
@@ -89,9 +89,18 @@ def get_arrival_times(station, key)
 		i += 1
 	end
 	i = 0
-	trains = doc.xpath("//destSt")
-	trains.each do |train|
-		arr[i] += " headed towards " + train.text + " station."
+	stations = doc.xpath("//destSt")
+	stations.each do |station|
+		code = station.text
+		code = code.to_i
+		if destinations.keys.include? code
+			name = destinations[code]
+		elsif code == 0
+			name = "the Loop"
+		else
+			name = "destination not found"
+		end
+		arr[i] += " headed towards " + name
 		i += 1
 	end
 	return arr
@@ -101,4 +110,4 @@ stops = initialize_stops
 destinations = initialize_destinations
 print_stops(stops)
 user_stop = get_user_stop(stops) # returns station code to plug into URL 
-puts get_arrival_times(user_stop, key)
+puts get_arrival_times(user_stop, key, destinations)
