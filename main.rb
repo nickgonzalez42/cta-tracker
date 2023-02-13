@@ -1,4 +1,14 @@
+#init and sample variables
 key = "fc53f4482790470da2cd1d4d1364199b"
+
+# TTY::Color.color?    # => true
+# TTY::Color.support?  # => true
+
+base = "lapi.transitchicago.com/api/1.0/ttarrivals.aspx"
+
+example = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=40380&max=10"
+example_damen = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=40090&max=10"
+example_damen_kimball_bound = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=30018&max=10"
 
 require "csv"
 require "open-uri"
@@ -6,6 +16,17 @@ require "nokogiri"
 
 require "tty-table"
 require "tty-color"
+
+def initialize_destinations
+	file = CSV.read("stops.txt")
+	dict = {}
+	file.each do |line|
+		if line[0].to_i > 29999 and line[0].to_i < 40000
+			dict[line[0].to_i] = line[2]
+		end
+	end
+	return dict
+end
 
 def initialize_stops
 	file = CSV.read("stops.txt")
@@ -53,46 +74,31 @@ def get_user_stop(stops)
 	end
 end
 
+def get_arrival_times(station, key)
+	live = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=#{station}&max=10"
+	doc = Nokogiri::XML(URI.open(live))
+	arr = []
+	trains = doc.xpath("//rt")
+	trains.each do |train|
+		arr << "A " + train.text + " line train will be arriving at "
+	end
+	i = 0
+	trains = doc.xpath("//arrT")
+	trains.each do |train|
+		arr[i] += train.text
+		i += 1
+	end
+	i = 0
+	trains = doc.xpath("//destSt")
+	trains.each do |train|
+		arr[i] += " headed towards " + train.text + " station."
+		i += 1
+	end
+	return arr
+end
+
 stops = initialize_stops
+destinations = initialize_destinations
 print_stops(stops)
 user_stop = get_user_stop(stops) # returns station code to plug into URL 
-
-p TTY::Color.color?    # => true
-p TTY::Color.support?  # => true
-
-base = "lapi.transitchicago.com/api/1.0/ttarrivals.aspx"
-
-example = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=40380&max=10"
-example_damen = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=40090&max=10"
-example_damen_kimball_bound = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=30018&max=10"
-live = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=#{user_stop}&max=10"
-
-doc = Nokogiri::XML(URI.open(live))
-
-# pp doc
-# pp doc.xpath("children")
-arr = []
-
-# adds the line to the arr
-trains = doc.xpath("//rt")
-trains.each do |train|
-  arr << "A " + train.text + " line train will be arriving at "
-end
-
-i = 0
-# adds the next Damen arrival times to arr
-trains = doc.xpath("//arrT")
-trains.each do |train|
-  # puts train.text
-  arr[i] += train.text
-  i += 1
-end
-
-i = 0
-trains = doc.xpath("//destSt")
-trains.each do |train|
-  arr[i] += " headed towards " + train.text + " station."
-  i += 1
-end
-
-puts arr
+puts get_arrival_times(user_stop, key)
