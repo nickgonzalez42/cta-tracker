@@ -1,21 +1,42 @@
-gem "tty-color"
-
 require "csv"
 require "open-uri"
 require "nokogiri"
 
-file = CSV.read("stops.txt")
-# pp file
+require "tty-table"
+require "tty-color"
 
-dict = {}
-
-file.each do |line|
-	if line[0].to_i > 39999 and line[0].to_i < 50000
-		dict[line[0].to_i] = line[2]
+def initialize_stops
+	file = CSV.read("stops.txt")
+	dict = {}
+	file.each do |line|
+		if line[0].to_i > 39999 and line[0].to_i < 50000
+			dict[line[0].to_i] = line[2]
+		end
 	end
+	return dict
 end
 
-pp dict
+def print_stops(stops)
+	stops = stops.sort_by { |key, value| value }.to_h
+	
+	table = TTY::Table.new(header: ["Station ID", "Station Name"], rows: [])
+	stops.each do |stop|
+		table << [ stop[0], stop[1]]
+	end
+	puts table.render(:ascii)
+end
+
+def get_user_stop
+	print "Please enter your Station Name or ID: "
+	i = gets.chomp
+end
+
+stops = initialize_stops
+print_stops(stops)
+get_user_stop
+
+p TTY::Color.color?    # => true
+p TTY::Color.support?  # => true
 
 base = "lapi.transitchicago.com/api/1.0/ttarrivals.aspx"
 damen_stop = "30019"
@@ -40,7 +61,7 @@ i = 0
 # adds the next Damen arrival times to arr
 trains = doc.xpath("//arrT")
 trains.each do |train|
-  puts train.text
+  # puts train.text
   arr[i] += train.text
   i += 1
 end
@@ -52,4 +73,4 @@ trains.each do |train|
   i += 1
 end
 
-puts arr
+# puts arr
