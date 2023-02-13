@@ -1,3 +1,5 @@
+key = "fc53f4482790470da2cd1d4d1364199b"
+
 require "csv"
 require "open-uri"
 require "nokogiri"
@@ -26,26 +28,46 @@ def print_stops(stops)
 	puts table.render(:ascii)
 end
 
-def get_user_stop
+def get_user_stop(stops)
 	print "Please enter your Station Name or ID: "
 	i = gets.chomp
+	if i.to_i == 0
+		names = []
+		stops.values.each do |stop|
+			names << stop
+		end
+		if names.include? i
+			p stops.key(i)
+		else
+			puts "No station found."
+			exit(0)
+		end
+	else
+		code = i.to_i
+		if stops.keys.include? code
+			return code
+		else
+			puts "No station found."
+			exit(0)
+		end
+	end
 end
 
 stops = initialize_stops
 print_stops(stops)
-get_user_stop
+user_stop = get_user_stop(stops) # returns station code to plug into URL 
 
 p TTY::Color.color?    # => true
 p TTY::Color.support?  # => true
 
 base = "lapi.transitchicago.com/api/1.0/ttarrivals.aspx"
-damen_stop = "30019"
-key = "fc53f4482790470da2cd1d4d1364199b"
+
 example = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=40380&max=10"
 example_damen = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=40090&max=10"
 example_damen_kimball_bound = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=30018&max=10"
+live = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=#{user_stop}&max=10"
 
-doc = Nokogiri::XML(URI.open(example))
+doc = Nokogiri::XML(URI.open(live))
 
 # pp doc
 # pp doc.xpath("children")
@@ -73,4 +95,4 @@ trains.each do |train|
   i += 1
 end
 
-# puts arr
+puts arr
