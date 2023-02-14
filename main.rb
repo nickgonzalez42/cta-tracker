@@ -1,5 +1,5 @@
 #init and sample variables
-key = ""
+key = "fc53f4482790470da2cd1d4d1364199b"
 
 # TTY::Color.color?    # => true
 # TTY::Color.support?  # => true
@@ -17,8 +17,16 @@ require "tty-table"
 require "tty-color"
 require "pastel"
 
+def checker(obj)
+	if obj == nil
+		puts "Connection or file not found"
+		exit(0)
+	end
+end
+
 def initialize_destinations
 	file = CSV.read("stops.txt")
+	checker(file)
 	dict = {}
 	file.each do |line|
 		if line[0].to_i > 29999 and line[0].to_i < 40000
@@ -30,6 +38,7 @@ end
 
 def initialize_stops
 	file = CSV.read("stops.txt")
+	checker(file)
 	dict = {}
 	file.each do |line|
 		if line[0].to_i > 39999 and line[0].to_i < 50000
@@ -81,25 +90,7 @@ def get_arrival_times(station, key, destinations)
 	i = 0
 	trains = doc.xpath("//rt")
 	trains.each do |train|
-		name = ""
-		case train.text
-		when "G"
-			arr << ["Green"]
-		when "Org"
-			arr << ["Orange"]
-		when "P"
-			arr << ["Purple"]
-		when "Blue"
-			arr << ["Blue"]
-		when "Pink"
-			arr << ["Pink"]
-		when "Brn"
-			arr << ["Brown"]
-		when "Red"
-			arr << ["Red"]
-		when "Y"
-			arr << ["Yellow"]	
-		end
+		arr << [train.text]
 	end
 	i = 0
 	trains = doc.xpath("//arrT")
@@ -138,25 +129,29 @@ def convert_time_to_minutes(raw_time)
 	return ((arrival_time - local_time) / 60).round
 end
 
-def display_arrival_times(times)
+def display_arrival_times(times, stops, user_stop)
 	# TODO Get table working
 	# TODO Add a color works in terminal checker
+	if times.length < 1
+		puts "No arrival times scheduled"
+		exit(0)
+	end
 	pastel = Pastel.new
-	table = TTY::Table.new()
+	table = TTY::Table.new(header: ["Arrival Times for " + stops[user_stop]], rows: [])
 	times.each do |time|
 		colored_text = ""
 		case time[0]
-		when "Brown"
+		when "Brn"
 			colored_text = pastel.bright_black("Brown")
 		when "Red"
 			colored_text = pastel.red("Red")
-		when "Green"
+		when "G"
 			colored_text = pastel.green("Green")
-		when "Yellow"
+		when "Y"
 			colored_text = pastel.yellow("Yellow")
-		when "Purple"
+		when "P"
 			colored_text = pastel.magenta("Purple")
-		when "Orange"
+		when "Org"
 			colored_text = pastel.bright_yellow("Orange")
 		when "Blue"
 			colored_text = pastel.blue("Blue")
@@ -165,13 +160,14 @@ def display_arrival_times(times)
 		end
 		time_to_arrival = convert_time_to_minutes(time[1])
 		if TTY::Color.color?
-			puts colored_text + " line train towards " + time[2] + " will arrive in #{time_to_arrival} minutes."
+			table << [colored_text + " line train towards " + time[2] + " will arrive in #{time_to_arrival} minutes."]
 		else
-			puts time[0] + " line train towards " + time[2] + " will arrive in #{time_to_arrival} minutes."
+			table << [time[0] + " line train towards " + time[2] + " will arrive in #{time_to_arrival} minutes."]
 		end
 		# table << "A " + colored_text + " line train towards " + time[2] + " will arrive at " + time[1]
 	end
-	# puts table
+	Gem.win_platform? ? (system "cls") : (system "clear")
+	puts table.render(:ascii)
 end
 
 stops = initialize_stops
@@ -179,4 +175,4 @@ destinations = initialize_destinations
 print_stops(stops)
 user_stop = get_user_stop(stops) # returns station code to plug into URL 
 arrival_times = get_arrival_times(user_stop, key, destinations)
-display_arrival_times(arrival_times)
+display_arrival_times(arrival_times, stops, user_stop)
