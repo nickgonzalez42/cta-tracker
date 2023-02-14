@@ -1,5 +1,5 @@
 #init and sample variables
-key = "fc53f4482790470da2cd1d4d1364199b"
+key = ""
 
 # TTY::Color.color?    # => true
 # TTY::Color.support?  # => true
@@ -7,8 +7,8 @@ key = "fc53f4482790470da2cd1d4d1364199b"
 base = "lapi.transitchicago.com/api/1.0/ttarrivals.aspx"
 example = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=40380&max=10"
 example_damen = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=40090&max=10"
-example_damen_kimball_bound = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=30018&max=10"
 
+# gems
 require "csv"
 require "open-uri"
 require "nokogiri"
@@ -16,6 +16,9 @@ require "timezone"
 require "tty-table"
 require "tty-color"
 require "pastel"
+
+# file
+require_relative "customer_alerts"
 
 def checker(obj)
 	if obj == nil
@@ -170,9 +173,28 @@ def display_arrival_times(times, stops, user_stop)
 	puts table.render(:ascii)
 end
 
+def display_alerts(user_stop)
+	while true
+		print "View station/line alerts? (Y/N) "
+		i = gets.chomp.downcase
+		if i == "y"
+			table = TTY::Table.new(header: ["Alerts"], rows: [])
+			alerts = get_station_alerts(user_stop)
+			alerts.each do |alert|
+				table << [alert]
+			end
+			puts table.render(:ascii)
+			exit(0)
+		elsif i == "n"
+			exit(0)
+		end
+	end
+end
+
 stops = initialize_stops
 destinations = initialize_destinations
 print_stops(stops)
 user_stop = get_user_stop(stops) # returns station code to plug into URL 
 arrival_times = get_arrival_times(user_stop, key, destinations)
 display_arrival_times(arrival_times, stops, user_stop)
+display_alerts(user_stop)
