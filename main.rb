@@ -1,12 +1,5 @@
-#init and sample variables
-key = ""
-
-# TTY::Color.color?    # => true
-# TTY::Color.support?  # => true
-
-base = "lapi.transitchicago.com/api/1.0/ttarrivals.aspx"
-example = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=40380&max=10"
-example_damen = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=40090&max=10"
+train_key = "fc53f4482790470da2cd1d4d1364199b"
+bus_key = "xy8nWBFwwiRYaAQjLDewxLZN2"
 
 # gems
 require "csv"
@@ -20,6 +13,8 @@ require "tty-prompt"
 
 # file
 require_relative "customer_alerts"
+require_relative "train_tracker"
+require_relative "bus_tracker"
 
 def checker(obj)
 	if obj == nil
@@ -85,39 +80,6 @@ def get_user_stop(stops)
 			exit(0)
 		end
 	end
-end
-
-def get_arrival_times(station, key, destinations)
-	live = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=#{station}&max=10"
-	doc = Nokogiri::XML(URI.open(live))
-	arr = []
-	i = 0
-	trains = doc.xpath("//rt")
-	trains.each do |train|
-		arr << [train.text]
-	end
-	i = 0
-	trains = doc.xpath("//arrT")
-	trains.each do |train|
-		arr[i] << train.text
-		i += 1
-	end
-	i = 0
-	stations = doc.xpath("//destSt")
-	stations.each do |station|
-		code = station.text
-		code = code.to_i
-		if destinations.keys.include? code
-			name = destinations[code]
-		elsif code == 0
-			name = "the Loop"
-		else
-			name = "destination not found"
-		end
-		arr[i] << name
-		i += 1
-	end
-	return arr
 end
 
 def convert_time_to_minutes(raw_time)
@@ -205,6 +167,6 @@ stops = initialize_stops
 destinations = initialize_destinations
 print_stops(stops)
 user_stop = get_user_stop(stops) # returns station code to plug into URL 
-arrival_times = get_arrival_times(user_stop, key, destinations)
+arrival_times = get_train_arrival_times(user_stop, train_key, destinations)
 display_arrival_times(arrival_times, stops, user_stop)
 display_alerts(user_stop)
