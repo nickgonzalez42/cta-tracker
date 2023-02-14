@@ -16,6 +16,7 @@ require "timezone"
 require "tty-table"
 require "tty-color"
 require "pastel"
+require "tty-prompt"
 
 # file
 require_relative "customer_alerts"
@@ -175,17 +176,26 @@ end
 
 def display_alerts(user_stop)
 	while true
-		print "View station/line alerts? (Y/N) "
-		i = gets.chomp.downcase
-		if i == "y"
+		prompt = TTY::Prompt.new
+		i = prompt.yes?("View alerts?") do |q|
+		  q.suffix "Yes/No"
+		  q.positive "Yes"
+		  q.negative "No"
+		  q.convert -> (input) { !input.match(/^yes$/i).nil? }
+		end
+		if i
 			table = TTY::Table.new(header: ["Alerts"], rows: [])
 			alerts = get_station_alerts(user_stop)
+			if alerts.length < 1
+				puts "No alerts"
+				exit(0)
+			end
 			alerts.each do |alert|
 				table << [alert]
 			end
 			puts table.render(:ascii)
 			exit(0)
-		elsif i == "n"
+		elsif i == false
 			exit(0)
 		end
 	end
