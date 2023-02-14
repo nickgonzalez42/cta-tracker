@@ -12,7 +12,7 @@ example_damen_kimball_bound = "http://lapi.transitchicago.com/api/1.0/ttarrivals
 require "csv"
 require "open-uri"
 require "nokogiri"
-
+require "timezone"
 require "tty-table"
 require "tty-color"
 require "pastel"
@@ -44,7 +44,7 @@ def print_stops(stops)
 	
 	table = TTY::Table.new(header: ["Station ID", "Station Name"], rows: [])
 	stops.each do |stop|
-		table << [ stop[0], stop[1]]
+		table << [stop[0], stop[1]]
 	end
 	puts table.render(:ascii)
 end
@@ -125,8 +125,24 @@ def get_arrival_times(station, key, destinations)
 	return arr
 end
 
+def convert_time_to_minutes(raw_time)
+	year = raw_time[0, 4].to_i
+	month = raw_time[4..5].to_i
+	day = raw_time[6..7].to_i
+	hour = raw_time[9..10].to_i
+	minute = raw_time[12..13].to_i
+	second = raw_time[15..16].to_i
+	tz = Timezone["America/Chicago"]
+	local_time = Time.now.getlocal
+	arrival_time = Time.new(year, month, day, hour, minute, second, tz)
+	return ((arrival_time - local_time) / 60).round
+end
+
 def display_arrival_times(times)
+	# TODO Get table working
+	# TODO Add a color works in terminal checker
 	pastel = Pastel.new
+	table = TTY::Table.new()
 	times.each do |time|
 		colored_text = ""
 		case time[0]
@@ -147,10 +163,15 @@ def display_arrival_times(times)
 		when "Pink"
 			colored_text = pastel.bright_red("Pink")
 		end
-		# puts colored_text
-		puts "A " + colored_text + " line train towards " + time[2] + " will arrive at " + time[1]
+		time_to_arrival = convert_time_to_minutes(time[1])
+		if TTY::Color.color?
+			puts colored_text + " line train towards " + time[2] + " will arrive in #{time_to_arrival} minutes."
+		else
+			puts time[0] + " line train towards " + time[2] + " will arrive in #{time_to_arrival} minutes."
+		end
+		# table << "A " + colored_text + " line train towards " + time[2] + " will arrive at " + time[1]
 	end
-	
+	# puts table
 end
 
 stops = initialize_stops
