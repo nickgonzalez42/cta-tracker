@@ -54,3 +54,42 @@ def get_train_arrival_times(station, key, destinations)
 	end
 	return arr
 end
+
+def display_train_arrival_times(times, stops, user_stop)
+	if times.length < 1
+		puts "No arrival times scheduled"
+		exit(0)
+	end
+	pastel = Pastel.new
+	table = TTY::Table.new(header: ["Arrival Times for " + stops[user_stop]], rows: [])
+	times.each do |time|
+		colored_text = ""
+		case time[0]
+		when "Brn"
+			colored_text = pastel.bright_black("Brown")
+		when "Red"
+			colored_text = pastel.red("Red")
+		when "G"
+			colored_text = pastel.green("Green")
+		when "Y"
+			colored_text = pastel.yellow("Yellow")
+		when "P"
+			colored_text = pastel.magenta("Purple")
+		when "Org"
+			colored_text = pastel.bright_yellow("Orange")
+		when "Blue"
+			colored_text = pastel.blue("Blue")
+		when "Pink"
+			colored_text = pastel.bright_red("Pink")
+		end
+		time_to_arrival = convert_time_to_minutes(time[1])
+		if TTY::Color.color?
+			table << [colored_text + " line train towards " + time[2] + " will arrive in #{time_to_arrival} minutes."]
+		else
+			table << [time[0] + " line train towards " + time[2] + " will arrive in #{time_to_arrival} minutes."]
+		end
+		# table << "A " + colored_text + " line train towards " + time[2] + " will arrive at " + time[1]
+	end
+	Gem.win_platform? ? (system "cls") : (system "clear")
+	puts table.render(:ascii)
+end
