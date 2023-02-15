@@ -29,8 +29,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Chicago_Transit_Authority_Logo.svg/1200px-Chicago_Transit_Authority_Logo.svg.png">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/nickgonzalez42/cta-tracker">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Chicago_Transit_Authority_Logo.svg/1200px-Chicago_Transit_Authority_Logo.svg.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">CTA Tracker</h3>
