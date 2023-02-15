@@ -34,10 +34,10 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Chicago_Transit_Authority_Logo.svg/1200px-Chicago_Transit_Authority_Logo.svg.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">cta_tracker</h3>
 
   <p align="center">
-    project_description
+    Track CTA Trains and Busses in the terminal
     <br />
     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
