@@ -36,7 +36,7 @@
 <h3 align="center">CTA Tracker</h3>
 
   <p align="center">
-    Track CTA Trains and Busses in the terminal
+    Track CTA Trains and Buses in the terminal
     <br />
     <a href="https://github.com/nickgonzalez42/cta-tracker"><strong>Explore the docs »</strong></a>
     <br />
