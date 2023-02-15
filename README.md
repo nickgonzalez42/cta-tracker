@@ -157,6 +157,7 @@ Don't forget to give the project a star! Thanks again!
 ## Contact
 
 Nicholas Gonzalez - thisnickg194@gmail.com
+<br />
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 Project Link: [https://github.com/nickgonzalez42/cta-tracker](https://github.com/nickgonzalez42/cta-tracker)
