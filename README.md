@@ -123,10 +123,22 @@ The only prerequisite for running this program is to have Ruby installed on your
 1. Run main.rb to start the program (make sure to enter your API keys at the top of the file!)
 2. On startup, the user is prompted for train or bus responses.
   <img width="263" alt="image" src="https://user-images.githubusercontent.com/41881164/219175220-7c4ab861-5598-40be-8c91-5a6eec4bd920.png">
-3. If the user selects trains, the terminal will display an exhaustive list of CTA stations. The user can enter either the station code or the (case-sensitive) station name. <br />
-4. The terminal will then display all (if any) trains are scheduled for that stop. <br />
-5. The bus selection works similarly, however, the user will need to first select their bus route, direction, and then stop before seeing results. <br />
+3. If the user selects trains, the terminal will display an exhaustive list of CTA stations. The user can enter either the station code or the (case-sensitive) station name. 
+  <img width="388" alt="image" src="https://user-images.githubusercontent.com/41881164/219179411-ed7abd79-1ad2-42a8-8bac-038d46669619.png">
+<br />
+4. The terminal will then display all (if any) trains are scheduled for that stop. 
+  <img width="436" alt="image" src="https://user-images.githubusercontent.com/41881164/219180281-46172b84-37a7-4160-816d-9353c8fb6436.png">
+<br />
+5. The bus selection works similarly, however, the user will need to first select their bus route, direction, and then stop before seeing results. 
+  <img width="316" alt="image" src="https://user-images.githubusercontent.com/41881164/219181149-fcd9a6e3-c28e-4b86-90e5-0cda35cb5f99.png">
+  <img width="369" alt="image" src="https://user-images.githubusercontent.com/41881164/219181349-53251485-9d32-4d7c-85ed-fa16ed457be3.png">
+  <img width="323" alt="image" src="https://user-images.githubusercontent.com/41881164/219181710-6ce36b40-5747-4239-864f-cdd78da5ab94.png">
+  <img width="336" alt="image" src="https://user-images.githubusercontent.com/41881164/219182043-0b5e8ed4-d6bc-4ff4-9615-b6a1a668cb09.png">
+<br />
 6. After the predictions have been displayed, the user will be prompted if they'd like to view any alerts. <br />
+  <img width="564" alt="image" src="https://user-images.githubusercontent.com/41881164/219180781-251f779a-f62b-4de1-a443-e1bfeca9d34d.png">
+  
+  
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
