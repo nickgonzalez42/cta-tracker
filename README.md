@@ -57,9 +57,6 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
@@ -84,24 +81,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://user-images.githubusercontent.com/41881164/219143471-22e024d7-cbc0-40f9-8368-00e00acaa962.png)
 
-The intention of this project was to create a stripped down Chicago Transit Authority (CTA) train and bus tracker that can be run for your terminal. In it's current state, the app will display all schedued trains for a particular station and buses for a particular route going in a cardinal direction for a selected stop. More updates are planned to make the final version more user friendly.
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-### Built With
-
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+The intention of this project was to create a stripped down Chicago Transit Authority (CTA) train and bus tracker that can be run for your terminal. In it's current state, the app will display all schedued trains for a particular station and buses for a particular route going in a cardinal direction for a selected stop. After receiving the time predictions, the user can request service alerts for any lines that could impact their transit. More updates are planned to make the final version more user friendly.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -123,18 +103,19 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
+1. Get a free API Keys at [https://www.transitchicago.com/developers/](https://www.transitchicago.com/developers/)
 2. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/nickgonzalez42/cta-tracker.git
    ```
 3. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+4. Enter your API in `main.rb`
+   ```rb
+   train_key = "ENTER YOUR TRAIN API"
+   bus_key = "ENTER YOUR BUS API"
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -160,7 +141,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Feature 3
     - [ ] Nested Feature
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/nickgonzalez42/cta-tracker/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -196,9 +177,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Nicholas Gonzalez - thisnickg194@gmail.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/nickgonzalez42/cta-tracker](https://github.com/nickgonzalez42/cta-tracker)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
