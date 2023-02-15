@@ -18,7 +18,7 @@ require_relative "bus_tracker"
 
 def checker(obj)
 	if obj == nil
-		puts "Connection or file not found"
+		puts "File not found"
 		exit(0)
 	end
 end
