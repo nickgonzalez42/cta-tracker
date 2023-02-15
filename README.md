@@ -120,6 +120,14 @@ The only prerequisite for running this program is to have Ruby installed on your
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+1. Run main.rb to start the program (make sure to enter your API keys at the top of the file!)
+2. On startup, the user is prompted for train or bus responses.
+  <img width="263" alt="image" src="https://user-images.githubusercontent.com/41881164/219175220-7c4ab861-5598-40be-8c91-5a6eec4bd920.png">
+3. If the user selects trains, the terminal will display an exhaustive list of CTA stations. The user can enter either the station code or the (case-sensitive) station name.
+4. The terminal will then display all (if any) trains are scheduled for that stop.
+5. The bus selection works similarly, however, the user will need to first select their bus route, direction, and then stop before seeing results.
+6. After the predictions have been displayed, the user will be prompted if they'd like to view any alerts.
+
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 
