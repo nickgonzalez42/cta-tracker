@@ -1,5 +1,5 @@
-train_key = "fc53f4482790470da2cd1d4d1364199b"
-bus_key = "xy8nWBFwwiRYaAQjLDewxLZN2"
+train_key = ""
+bus_key = ""
 
 # gems
 require "csv"

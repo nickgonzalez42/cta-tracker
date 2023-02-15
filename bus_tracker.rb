@@ -99,7 +99,7 @@ def display_bus_arrival_times(times)
 		else
 			type = "departure"
 		end
-		if times[2] == "true"
+		if times[2] == true
 			delay = "Delayed"
 		else
 			delay = "On time"
