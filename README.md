@@ -137,11 +137,6 @@ The only prerequisite for running this program is to have Ruby installed on your
 <br />
 6. After the predictions have been displayed, the user will be prompted if they'd like to view any alerts. <br />
   <img width="564" alt="image" src="https://user-images.githubusercontent.com/41881164/219180781-251f779a-f62b-4de1-a443-e1bfeca9d34d.png">
-  
-  
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
