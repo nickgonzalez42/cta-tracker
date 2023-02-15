@@ -23,30 +23,6 @@ def checker(obj)
 	end
 end
 
-def initialize_destinations
-	file = CSV.read("stops.txt")
-	checker(file)
-	dict = {}
-	file.each do |line|
-		if line[0].to_i > 29999 and line[0].to_i < 40000
-			dict[line[0].to_i] = line[2]
-		end
-	end
-	return dict
-end
-
-def initialize_stops
-	file = CSV.read("stops.txt")
-	checker(file)
-	dict = {}
-	file.each do |line|
-		if line[0].to_i > 39999 and line[0].to_i < 50000
-			dict[line[0].to_i] = line[2]
-		end
-	end
-	return dict
-end
-
 def print_stops(stops)
 	stops = stops.sort_by { |key, value| value }.to_h
 	
@@ -96,8 +72,6 @@ def convert_time_to_minutes(raw_time)
 end
 
 def display_arrival_times(times, stops, user_stop)
-	# TODO Get table working
-	# TODO Add a color works in terminal checker
 	if times.length < 1
 		puts "No arrival times scheduled"
 		exit(0)
@@ -163,10 +137,41 @@ def display_alerts(user_stop)
 	end
 end
 
-stops = initialize_stops
-destinations = initialize_destinations
-print_stops(stops)
-user_stop = get_user_stop(stops) # returns station code to plug into URL 
-arrival_times = get_train_arrival_times(user_stop, train_key, destinations)
-display_arrival_times(arrival_times, stops, user_stop)
-display_alerts(user_stop)
+def run_train_tracker(train_key)
+	stops = initialize_train_stops
+	destinations = initialize_train_destinations
+	print_stops(stops)
+	user_stop = get_user_stop(stops) # returns station code to plug into URL 
+	arrival_times = get_train_arrival_times(user_stop, train_key, destinations)
+	display_arrival_times(arrival_times, stops, user_stop)
+	display_alerts(user_stop)
+end
+
+def run_bus_tracker(bus_key)
+	routes = get_routes(bus_key)
+	print_routes(routes)
+	# stops = initialize_train_stops
+	# destinations = initialize_train_destinations
+	# print_stops(stops)
+	# user_stop = get_user_stop(stops) # returns station code to plug into URL 
+	# arrival_times = get_train_arrival_times(user_stop, train_key, destinations)
+	# display_arrival_times(arrival_times, stops, user_stop)
+	# display_alerts(user_stop)
+end
+
+def state(train_key, bus_key)
+	prompt = TTY::Prompt.new
+	i = prompt.yes?("Train Tracker or Bus Tracker?") do |q|
+	  q.suffix "Train/Bus"
+	  q.positive "Train"
+	  q.negative "Bus"
+	  q.convert -> (input) { !input.match(/^train$/i).nil? }
+	end
+	if i
+		run_train_tracker(train_key)
+	else
+		run_bus_tracker(bus_key)
+	end
+end
+
+state(train_key, bus_key)
