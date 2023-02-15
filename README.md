@@ -92,7 +92,6 @@ Setting up the program is as straight-forward as installing Ruby and downloading
 ### Prerequisites
 
 The only prerequisite for running this program is to have Ruby installed on your machine: [https://www.ruby-lang.org/en/documentation/installation/](https://www.ruby-lang.org/en/documentation/installation/).
-* npm
   ```sh
   brew install ruby
   ```
