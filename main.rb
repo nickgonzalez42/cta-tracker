@@ -23,8 +23,10 @@ def checker(obj)
 	end
 end
 
-def print_stops(stops)
-	stops = stops.sort_by { |key, value| value }.to_h
+def print_table(stops, reorder)
+	if reorder
+		stops = stops.sort_by { |key, value| value }.to_h
+	end
 	
 	table = TTY::Table.new(header: ["Station ID", "Station Name"], rows: [])
 	stops.each do |stop|
@@ -33,26 +35,25 @@ def print_stops(stops)
 	puts table.render(:ascii)
 end
 
-def get_user_stop(stops)
-	print "Please enter your Station Name or ID: "
+def get_user_choice(table)
 	i = gets.chomp
 	if i.to_i == 0
 		names = []
-		stops.values.each do |stop|
-			names << stop
+		table.values.each do |value|
+			names << value
 		end
 		if names.include? i
-			return stops.key(i)
+			return table.key(i)
 		else
-			puts "No station found."
+			puts "Selection not found."
 			exit(0)
 		end
 	else
 		code = i.to_i
-		if stops.keys.include? code
+		if table.keys.include? code
 			return code
 		else
-			puts "No station found."
+			puts "Numeric selection not found."
 			exit(0)
 		end
 	end
@@ -140,8 +141,9 @@ end
 def run_train_tracker(train_key)
 	stops = initialize_train_stops
 	destinations = initialize_train_destinations
-	print_stops(stops)
-	user_stop = get_user_stop(stops) # returns station code to plug into URL 
+	print_table(stops, true)
+	print "Please enter your Station Name or ID: "
+	user_stop = get_user_choice(stops) # returns station code to plug into URL 
 	arrival_times = get_train_arrival_times(user_stop, train_key, destinations)
 	display_arrival_times(arrival_times, stops, user_stop)
 	display_alerts(user_stop)
@@ -149,10 +151,18 @@ end
 
 def run_bus_tracker(bus_key)
 	routes = get_routes(bus_key)
-	print_routes(routes)
-	# stops = initialize_train_stops
-	# destinations = initialize_train_destinations
-	# print_stops(stops)
+	print_table(routes, false)
+	print "Please enter your Station Name or ID: "
+	user_route = get_user_choice(routes)
+	direction = get_user_direction(user_route, bus_key)
+	p direction
+	stops = get_route_stops(user_route, direction, bus_key)
+	print_table(stops, false)
+	print "Please enter your Stop Name or ID: "
+	stop = get_user_choice(stops)
+	# times = get_bus_arrival_times(user_route, stop, direction, bus_key)
+	# p times
+	display_alerts(stop)
 	# user_stop = get_user_stop(stops) # returns station code to plug into URL 
 	# arrival_times = get_train_arrival_times(user_stop, train_key, destinations)
 	# display_arrival_times(arrival_times, stops, user_stop)
