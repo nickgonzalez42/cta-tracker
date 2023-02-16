@@ -129,6 +129,23 @@ def run_bus_tracker(bus_key)
 	# display_alerts(user_stop)
 end
 
+def looper(path, arr, doc)
+	list = doc.xpath(path)
+	i = 0
+	if arr == []
+		list.each do |item|
+			arr << [item.text]
+			i += 1
+		end
+	else
+		list.each do |item|
+			arr[i] << item.text
+			i += 1
+		end
+	end
+	return arr
+end
+
 def state(train_key, bus_key)
 	prompt = TTY::Prompt.new
 	i = prompt.yes?("Train Tracker or Bus Tracker?") do |q|

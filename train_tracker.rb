@@ -26,17 +26,9 @@ def get_train_arrival_times(station, key, destinations)
 	live = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=#{key}&mapid=#{station}&max=10"
 	doc = Nokogiri::XML(URI.open(live))
 	arr = []
-	i = 0
-	trains = doc.xpath("//rt")
-	trains.each do |train|
-		arr << [train.text]
-	end
-	i = 0
-	trains = doc.xpath("//arrT")
-	trains.each do |train|
-		arr[i] << train.text
-		i += 1
-	end
+	
+	arr = looper("//rt", arr, doc)
+	arr = looper("//arrT", arr, doc)
 	i = 0
 	stations = doc.xpath("//destSt")
 	stations.each do |station|
@@ -88,7 +80,6 @@ def display_train_arrival_times(times, stops, user_stop)
 		else
 			table << [time[0] + " line train towards " + time[2] + " will arrive in #{time_to_arrival} minutes."]
 		end
-		# table << "A " + colored_text + " line train towards " + time[2] + " will arrive at " + time[1]
 	end
 	Gem.win_platform? ? (system "cls") : (system "clear")
 	puts table.render(:ascii)
