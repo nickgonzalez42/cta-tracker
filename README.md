@@ -186,7 +186,7 @@ Project Link: [https://github.com/nickgonzalez42/cta-tracker](https://github.com
 [license-url]: https://github.com/nickgonzalez42/cta-tracker/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/nicholasjgonzalez/
-[product-screenshot]: https://user-images.githubusercontent.com/41881164/228363472-4adfcea1-4d67-4710-99d6-6e5cfe83089c.png
+[product-screenshot]: https://user-images.githubusercontent.com/41881164/228363876-30b498d3-5885-46eb-87c8-1256b6b50648.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
